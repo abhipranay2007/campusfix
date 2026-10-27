@@ -10,4 +10,7 @@ Last verified locally on 27 October 2026.
 - [x] Frontend production build and backend unit/API/browser workflow checks pass with local MongoDB.
 - [x] README, architecture, API, testing, decisions, viva, and demo documentation reflect implemented behavior.
 - [x] Local run commands and Git-ignored configuration have been checked.
-- [ ] Public deployment, GitHub publication, demo recording, and official form submission remain outstanding.
+- [x] Public deployment is live at https://campusfix-7eff.onrender.com and the health endpoint returns `{"status":"ok"}`.
+- [x] Source is published at https://github.com/abhipranay2007/campusfix with the implementation history and deployment documentation.
+- [ ] Record and upload the required 3–5 minute demo video.
+- [ ] Complete the official submission form with the student's name and accessible demo link. The published deadline (27 October 2026, 11:59 PM IST) has passed.
