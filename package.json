@@ -1,0 +1,22 @@
+{
+  "name": "campusfix",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Campus issue reporting and resolution platform",
+  "scripts": {
+    "setup": "node scripts/setup-local.js",
+    "dev": "node scripts/dev.js",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start",
+    "staff:create": "npm --prefix server run staff:create",
+    "test": "npm --prefix server test",
+    "test:acceptance": "node scripts/acceptance-smoke.js"
+  },
+  "devDependencies": {},
+  "workspaces": [
+    "server",
+    "client"
+  ]
+}
