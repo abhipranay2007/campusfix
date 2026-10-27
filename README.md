@@ -96,9 +96,26 @@ See [docs/TESTING.md](docs/TESTING.md) for test coverage and verification instru
 - [Demo script](docs/DEMO_SCRIPT.md)
 - [Acceptance checklist](docs/ACCEPTANCE_CHECKLIST.md)
 
-## Deployment preparation
+## Deployment: Render + MongoDB Atlas
 
-Build the frontend with `npm run build`. Set `NODE_ENV=production`, a unique `JWT_SECRET` of at least 32 characters, a production `MONGODB_URI`, `PORT`, and the deployed frontend origin in `CLIENT_ORIGIN`. Deploy the `client/dist` static files and Express API behind HTTPS and configure a same-site reverse proxy so browser cookies remain HttpOnly and same-site. No deployment has been performed; this repository does not yet have a live URL. Verify the deployed client, API, and database before submission.
+The app can run as one Render Node web service: Express serves the built React site and the `/api/v1` API from the same HTTPS origin, so the HttpOnly login cookie remains same-site. MongoDB Atlas provides the hosted database. No public deployment has been performed yet.
+
+1. Push this repository to GitHub, then create an Atlas project and a small Free (M0) cluster. Create a database user with read/write access and copy the application connection string. Use a database name such as `campusfix` in the URI.
+2. In Atlas Network Access, add the outbound IP ranges shown on the Render service's **Connect → Outbound** tab. Atlas accepts trusted IP ranges; keep this list limited to the Render ranges and your own IP while setting up.
+3. In Render, create a **Web Service** connected to the repository, using the repository root. Set the build command to `npm ci && npm run build` and the start command to `npm start`.
+4. Add these environment variables in Render (keep secrets out of Git):
+
+   | Name | Value |
+   |---|---|
+   | `NODE_ENV` | `production` |
+   | `MONGODB_URI` | Atlas application connection string |
+   | `JWT_SECRET` | A private random value of at least 32 characters |
+   | `CLIENT_ORIGIN` | The Render URL for this service, such as `https://your-app.onrender.com` |
+
+   Render supplies `PORT` to the app. Generate a secret locally with `node -e "console.log(require('node:crypto').randomBytes(48).toString('base64url'))"` and paste it directly into Render's environment settings.
+5. After deployment, open `https://your-app.onrender.com/api/v1/health` and confirm it returns `{"status":"ok"}`, then register a student and try the report workflow. Create the first staff account against the Atlas database using `npm run staff:create` from a trusted terminal with the production `MONGODB_URI` and `JWT_SECRET` set; temporarily add your current IP to the Atlas access list for this step, then remove it when finished.
+
+Render's free web services sleep after inactivity and wake on the next request, so the first page load may take longer. Atlas Free clusters are intended for small-scale development and learning use. See [Render's Express deploy guide](https://render.com/docs/deploy-node-express-app), [Render's Atlas connection guide](https://render.com/docs/connect-to-mongodb-atlas), and [Atlas Free cluster setup](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster/) for current provider steps and limits.
 
 ## Known limitations and submission work
 
